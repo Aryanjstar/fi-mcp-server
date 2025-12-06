@@ -425,6 +425,31 @@ app.post('/mcp/stream', (req, res) => {
     
     console.log(`📡 MCP Request: ${method}`, { sessionId, params });
     
+    // Handle initialize method
+    if (method === 'initialize') {
+        const newSessionId = uuidv4();
+        sessions.set(newSessionId, { 
+            initialized: true, 
+            createdAt: new Date().toISOString() 
+        });
+        
+        return res.json({
+            jsonrpc: '2.0',
+            id,
+            result: {
+                protocolVersion: '2024-11-05',
+                serverInfo: {
+                    name: 'Fi MCP Server',
+                    version: '1.0.0'
+                },
+                capabilities: {
+                    tools: {}
+                },
+                sessionId: newSessionId
+            }
+        });
+    }
+    
     if (method === 'tools/list') {
         return res.json({
             jsonrpc: '2.0',
