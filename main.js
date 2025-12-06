@@ -484,6 +484,23 @@ app.post('/mcp/stream', (req, res) => {
     });
 });
 
+// Root route - welcome page
+app.get('/', (req, res) => {
+    res.json({
+        service: 'Fi MCP Server',
+        version: '1.0.0',
+        description: 'Mock Financial Data Provider for AURA Financial Platform',
+        status: 'running',
+        endpoints: {
+            health: 'GET /health',
+            mcpStream: 'POST /mcp/stream',
+            profiles: 'GET /api/profiles'
+        },
+        documentation: 'https://github.com/Aryanjstar/fi-mcp-server',
+        timestamp: new Date().toISOString()
+    });
+});
+
 // Health check
 app.get('/health', (req, res) => {
     res.json({
